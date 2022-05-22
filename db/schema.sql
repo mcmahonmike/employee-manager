@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS employee;
 
 
 
-
+-- Data Tables 
 CREATE TABLE department (
   id INTEGER AUTO_INCREMENT PRIMARY KEY,
   dept_name VARCHAR(30) NOT NULL
@@ -26,7 +26,7 @@ CREATE TABLE employee (
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
   role_id INTEGER,
-  manager_id INTEGER NOT NULL,
+  manager_id INTEGER,
   FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 

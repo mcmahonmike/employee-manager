@@ -37,6 +37,35 @@ function viewDept() {
 })
 }
 
+function viewRole() {
+    connection.connect(function(err) {
+        if (err) throw err;
+    connection.query(
+        `SELECT * FROM roles 
+        LEFT JOIN department ON roles.department_id = department.id`, function (err, res, fields) {
+            if (err) throw err;
+            
+            console.table(res) 
+            mainMenu()
+        })  
+})
+
+}
+
+function viewEmployee() {
+    connection.connect(function(err) {
+        if (err) throw err;
+    connection.query(
+        `SELECT * FROM employee
+        LEFT JOIN roles ON employee.role_id = roles.title`, function (err, res, fields) {
+            if (err) throw err;
+            
+            console.table(res) 
+            mainMenu()
+        })  
+})
+}
+
 function mainMenu() {
     const option = [
         {
@@ -67,6 +96,14 @@ function init() {
             case 'View all Departments':
                 viewDept();
                 break;
+
+            case 'View all Roles':
+                viewRole();
+                break;
+
+            case 'View all Employees':
+                viewEmployee();
+                break;   
         }
       })
       .catch((error) => {
