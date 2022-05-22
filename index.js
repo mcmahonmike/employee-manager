@@ -57,7 +57,8 @@ function viewEmployee() {
         if (err) throw err;
     connection.query(
         `SELECT * FROM employee
-        LEFT JOIN roles ON employee.role_id = roles.title`, function (err, res, fields) {
+        LEFT JOIN roles ON employee.role_id = roles.id`
+        , function (err, res, fields) {
             if (err) throw err;
             
             console.table(res) 
