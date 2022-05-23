@@ -1,7 +1,5 @@
 // Packages needed for this application
-const { response } = require('express');
 const inquirer = require('inquirer');
-//const viewDept = require('./dist/viewDept')
 const sql = require('mysql2')
 
 
@@ -67,6 +65,68 @@ function viewEmployee() {
 })
 }
 
+function addDept() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'newDept',
+            message: 'What is the Depatment name you would like to add?'
+        }
+    ])
+    .then((response) => {
+    const mysql = `INSERT INTO department (dept_name)
+                   VALUES (?) `
+    params = [response.newDept]
+  
+        connection.query(mysql, params, (err, res) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.table(res) 
+            viewDept()
+        })  
+})
+}
+
+function addRole() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'newRole',
+            message: 'What is the name of the Role you would like to add?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'What is Salary of the new role?'
+        },
+        {
+            type: 'list',
+            name: 'department',
+            message: 'Which Department will the new Role join? (1 = Cheese, 2 = Events, 3 = Janitorial, 4 = Distribution, 5 = IT',
+            choices: [1, 2, 3, 4, 5]
+        }
+        
+    ])
+    .then((response) => {
+    const mysql = `INSERT INTO roles (title, salary, department_id )
+                   VALUES (?,?,?) `
+    params = [response.newRole, response.salary, response.department]
+  
+        connection.query(mysql, params, (err, res) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.table(res) 
+            viewRole()
+        })  
+})
+}
+
+
+
 function mainMenu() {
     const option = [
         {
@@ -104,7 +164,15 @@ function init() {
 
             case 'View all Employees':
                 viewEmployee();
-                break;   
+                break;
+                
+            case 'Add a Department':
+                addDept();
+                break; 
+                
+            case 'Add a Role':
+                addRole();
+                break;  
         }
       })
       .catch((error) => {
